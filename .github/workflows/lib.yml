@@ -10,9 +10,6 @@ on:
   push:
     branches:
       - 'lib'
-    paths:
-      - 'action.yml'
-      - 'functions'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -53,12 +50,13 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
-    - name: source lib action
-      uses: zhengmz/actions@lib
+    #- name: source lib action
+    #  uses: zhengmz/actions@lib
 
     - name: Check functions
       run: |
         #set +e
+        curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions | source
         info "information"
         warn "warning message"
         error "error log"
