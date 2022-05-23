@@ -50,13 +50,21 @@ jobs:
       uses: zhengmz/actions@lib
 
     - name: Check functions by action
+      env:
+        fname: /tmp/functions2
       run: |
         #set +e
         ls -alh
+        [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
         echo ${{ steps.lib.outputs.functions }}
         f=$(echo ${{ steps.lib.outputs.functions }} | base64 -d)
-        echo $f > /tmp/functions
-        cat /tmp/functions
+        echo $f
+        echo $f | sed 's/\\n/\n/g' > /tmp/functions
+        source /tmp/functions
+        info "information"
+        warn "warning message"
+        error "error log"
+        log "notice"
 
     - name: Check functions by curl
       run: |

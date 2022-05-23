@@ -14,8 +14,7 @@ runs:
       run: |
         source $GITHUB_ACTION_PATH/functions
         #o="$(cat $GITHUB_ACTION_PATH/functions | base64)"
-        #o="$(cat $GITHUB_ACTION_PATH/functions | sed 's/\n/\\n/g' | base64)"
-        o="$(cat $GITHUB_ACTION_PATH/functions | sed ":a;N;s/\n/\\n/g;ta" | base64)"
+        o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta' | base64)"
         info $o
         echo "::set-output name=functions::$o"
       shell: bash
