@@ -11,8 +11,8 @@ on:
     branches:
       - master
       - lib
-    #paths:
-    #  - '**/lib.yml'
+    paths:
+      - '**/lib2.yml'
     #  - 'functions'
     #  - 'action.yml'
 
@@ -61,13 +61,17 @@ jobs:
       uses: zhengmz/actions@lib
 
     - name: Check functions by action
+      env:
+        f: ${{ steps.lib.outputs.functions }}
       run: |
         #set +e
         ls -alh
-        echo ${{ steps.lib.outputs.functions }}
-        f=$(echo ${{ steps.lib.outputs.functions }} | base64 -d)
-        echo $f > /tmp/functions
-        cat /tmp/functions
+        echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
+        source /tmp/functions
+        info "information"
+        warn "warning message"
+        error "error log"
+        log "notice"
 
     - name: Check functions by curl
       run: |
