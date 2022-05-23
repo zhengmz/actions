@@ -56,7 +56,8 @@ jobs:
     - name: Check functions
       run: |
         #set +e
-        curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions | source
+        curl -fsSL -o functions https://github.com/zhengmz/actions/raw/lib/functions
+        source ./functions
         info "information"
         warn "warning message"
         error "error log"
