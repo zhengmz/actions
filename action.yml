@@ -1,11 +1,17 @@
 name: 'Libs Actions'
 author: 'zhengmz'
-description: 'Library for other action'
+description: 'Shell Library for other action'
+outputs:
+  functions:
+    description: "Shell functions"
+    value: ${{ steps.main.outputs.functions }}
 
 runs:
   using: "composite"
   steps: 
-    - run: source $GITHUB_ACTION_PATH/functions
+    - id: main
+      #run: source $GITHUB_ACTION_PATH/functions
+      run: echo "::set-output name=functions::$(cat $GITHUB_ACTION_PATH/functions)"
       shell: bash
 
 branding:
