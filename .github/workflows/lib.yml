@@ -14,7 +14,7 @@ on:
     paths:
       - '**lib.yml'
       - 'functions'
-      - 'actions.yml'
+      - 'action.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -61,9 +61,9 @@ jobs:
 
     - name: Check functions by action
       run: |
-        #set +e
+        set +e
         [ -f /tmp/functions ] && cat /tmp/functions
-        echo ${{ steps.lib.outputs.functions }} > /tmp/functions
+        echo "${{ steps.lib.outputs.functions }}" > /tmp/functions
         source /tmp/functions
         info "information"
         warn "warning message"
