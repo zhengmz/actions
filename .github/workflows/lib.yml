@@ -68,8 +68,6 @@ jobs:
     - name: Delete older workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       if: env.DELETE_OLD_RUN == 'true'
-      env:
-        ACTIONS_STEP_DEBUG: 'true'
       with:
         token: ${{ github.token }}
         repository: ${{ github.repository }}
