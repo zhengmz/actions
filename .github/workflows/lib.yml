@@ -59,6 +59,7 @@ jobs:
     - name: Check functions by curl
       run: |
         #set +e
+        ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
         curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
         source /tmp/functions
