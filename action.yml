@@ -12,7 +12,7 @@ runs:
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       run: |
-        o="$(cat $GITHUB_ACTION_PATH/functions)"
+        o="$(cat $GITHUB_ACTION_PATH/functions | base64)"
         echo "::set-output name=functions::$o"
       shell: bash
 
