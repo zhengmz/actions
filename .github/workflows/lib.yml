@@ -70,7 +70,7 @@ jobs:
         #set +e
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
-        echo "$f" | base64 -d | sed 's/\\n/\n/g' > /tmp/functions
+        echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
         cat /tmp/functions
         source /tmp/functions
         info "information"
