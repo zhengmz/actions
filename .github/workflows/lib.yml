@@ -9,7 +9,6 @@ name: Lib CI
 on: 
   push:
     branches:
-      - 'master'
       - 'lib'
     paths:
       - '**/lib.yml'
