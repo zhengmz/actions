@@ -56,7 +56,7 @@ jobs:
 
     - name: Delete older workflow runs
       #uses: zhengmz/actions/.github/workflows/lib.yml@lib
-      uses: .github/workflows/lib.yml@lib
+      uses: $GITHUB_REPOSITORY/.github/workflows/lib.yml@lib
       if: github.event.inputs.workflow == 'lib'
 
     - name: Run workflow lib.yml
