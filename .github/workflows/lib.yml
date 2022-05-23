@@ -56,6 +56,19 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
+    - name: Load lib action
+      id: lib
+      uses: zhengmz/actions@lib
+
+    - name: Check functions by action
+      run: |
+        #set +e
+        ls -alh
+        echo ${{ steps.lib.outputs.functions }}
+        f=$(echo ${{ steps.lib.outputs.functions }} | base64 -d)
+        echo $f > /tmp/functions
+        cat /tmp/functions
+
     - name: Check functions by curl
       run: |
         #set +e
