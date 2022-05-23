@@ -9,9 +9,12 @@ name: Lib CI
 on: 
   push:
     branches:
+      - 'master'
       - 'lib'
-    pathes:
-      - '**/lib.yml'
+    paths:
+      - '**lib.yml'
+      - 'functions'
+      - 'actions.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -52,14 +55,27 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
-    #- name: source lib action
-    #  uses: zhengmz/actions@lib
+    - name: source lib action
+      id: lib
+      uses: zhengmz/actions@lib
 
-    - name: Check functions
+    - name: Check functions by action
       run: |
         #set +e
-        curl -fsSL -o functions https://github.com/zhengmz/actions/raw/lib/functions
-        source ./functions
+        [ -f /tmp/functions ] && cat /tmp/functions
+        echo ${{ steps.lib.outputs.functions }} > /tmp/functions
+        source /tmp/functions
+        info "information"
+        warn "warning message"
+        error "error log"
+        log "notice"
+
+    - name: Check functions by curl
+      run: |
+        #set +e
+        [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
+        curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
+        source /tmp/functions
         info "information"
         warn "warning message"
         error "error log"
