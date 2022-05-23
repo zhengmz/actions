@@ -15,6 +15,7 @@ runs:
         source $GITHUB_ACTION_PATH/functions
         o="$(cat $GITHUB_ACTION_PATH/functions | sed 's/\n/\\n/g' | base64)"
         info $o
+        echo $o
         echo "::set-output name=functions::$o"
       shell: bash
 
