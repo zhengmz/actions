@@ -13,7 +13,7 @@ runs:
       #run: source $GITHUB_ACTION_PATH/functions
       run: |
         o="$(cat $GITHUB_ACTION_PATH/functions)"
-        echo "::set-output name=functions::\"$o\""
+        echo "::set-output name=functions::$o"
       shell: bash
 
 branding:
