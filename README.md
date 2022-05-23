@@ -7,5 +7,9 @@
 
 ## About workflow
 
-Strongly recommended to create all ci workflow in master branch.
+Strongly recommended to create all ci workflow in default branch.
+
+Because to trigger the `workflow_dispatch` event, workflow must be in the default branch.
+
+see: <https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow>
 
