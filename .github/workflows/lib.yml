@@ -10,10 +10,10 @@ on:
   push:
     branches:
       - 'lib'
-    paths:
-      - '**/lib.yml'
-      - 'functions'
-      - 'action.yml'
+    #paths:
+    #  - '**/lib.yml'
+    #  - 'functions'
+    #  - 'action.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   # Manual dispatch must be in the default branch.
