@@ -54,12 +54,17 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
+    - name: Delete older workflow runs
+      #uses: zhengmz/actions/.github/workflows/lib.yml@lib
+      uses: .github/workflows/lib.yml@lib
+      if: github.event.inputs.workflow == 'lib'
+
     - name: Run workflow lib.yml
       if: github.event.inputs.workflow == 'lib'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        #set +e
+        set +e
         #echo ${{ github.token }} | gh auth login --with-token
         gh workflow run lib.yml -f DELETE_OLD_RUN=$DELETE_OLD_RUN --ref ${{ github.event.inputs.workflow }}
 
