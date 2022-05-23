@@ -33,7 +33,7 @@ jobs:
 
     # For delete workflow
     permissions:
-      contents: write
+      actions: write
 
     if: github.event.repository.owner.id == github.event.sender.id
 
