@@ -13,7 +13,7 @@ runs:
       #run: source $GITHUB_ACTION_PATH/functions
       run: |
         source $GITHUB_ACTION_PATH/functions
-        o="$(cat $GITHUB_ACTION_PATH/functions | base64 -e)"
+        o="$(cat $GITHUB_ACTION_PATH/functions | base64)"
         info $o
         echo "::set-output name=functions::$o"
       shell: bash
