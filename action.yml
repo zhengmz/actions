@@ -11,7 +11,9 @@ runs:
   steps: 
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
-      run: echo "::set-output name=functions::$(cat $GITHUB_ACTION_PATH/functions)"
+      run: |
+        o="$(cat $GITHUB_ACTION_PATH/functions)"
+        echo "::set-output name=functions::\"$o\""
       shell: bash
 
 branding:
