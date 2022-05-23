@@ -56,9 +56,9 @@ jobs:
         #set +e
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
-        echo ${{ steps.lib.outputs.functions }}
+        #echo "${{ steps.lib.outputs.functions }}"
         #f=$(echo "${{ steps.lib.outputs.functions }}" | base64 -d)
-        #echo $f
+        #echo "$f"
         #echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
         echo "${{ steps.lib.outputs.functions }}" | sed 's/\\n/\n/g' > /tmp/functions
         source /tmp/functions
