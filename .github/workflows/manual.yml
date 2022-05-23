@@ -62,7 +62,7 @@ jobs:
       run: |
         set +e
         #echo ${{ github.token }} | gh auth login --with-token
-        gh workflow run ${{ github.event.inputs.workflow }}.yml -f DELETE_OLD_RUN=$DELETE_OLD_RUN
+        gh workflow run ${{ github.event.inputs.workflow }}.yml -f delete_run=$DELETE_OLD_RUN
 
     - name: Delete older workflow runs
       uses: Mattraks/delete-workflow-runs@v2
