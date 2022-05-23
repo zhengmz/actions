@@ -1,0 +1,13 @@
+name: 'Libs Actions'
+author: 'zhengmz'
+description: 'Library for other action'
+
+runs:
+  using: "composite"
+  steps: 
+    - run: source $GITHUB_ACTION_PATH/functions
+      shell: bash
+
+branding:
+  icon: 'book-open'
+  color: 'blue'

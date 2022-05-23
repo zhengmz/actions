@@ -1,0 +1,20 @@
+#!/bin/bash
+
+Red_font_prefix="\033[31m"
+Green_font_prefix="\033[32m"
+Yellow_font_prefix="\033[33m"
+Blue_font_prefix="\033[34m"
+Red_background_prefix="\033[41;37m"
+Green_background_prefix="\033[42;37m"
+Yello_background_prefix="\033[43;37m"
+Font_color_suffix="\033[0m"
+
+log() { echo -e "$*"; }
+red() { echo "${Red_font_prefix}$*${Font_color_suffix}"; }
+green() { echo "${Green_font_prefix}$*${Font_color_suffix}"; }
+yellow() { echo "${Yellow_font_prefix}$*${Font_color_suffix}"; }
+blue() { echo "${Blue_font_prefix}$*${Font_color_suffix}"; }
+info() { log "$(green [INFO]) $*"; }
+warn() { log "$(yellow [WARN]) $*"; }
+error() { log "$(red [ERROR]) $*"; }
+
