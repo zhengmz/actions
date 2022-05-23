@@ -1,24 +1,23 @@
 #=================================================
-# Description: ci for libs action
+# Description: Manually run a ci workflow
 # Lisence: MIT
 # Author: zhengmz
 #=================================================
 
-name: Lib CI
+name: Manual CI
 
 on: 
-  push:
-    branches:
-      - 'lib'
-    #paths:
-    #  - '**/lib.yml'
-    #  - 'functions'
-    #  - 'action.yml'
-
   # Allows you to run this workflow manually from the Actions tab
   # Manual dispatch must be in the default branch.
   workflow_dispatch:
     inputs:
+      workflow:
+        description: 'Delete older workflow run'
+        type: choice
+        required: true
+        default: 'lib'
+        options:
+          - lib
       delete_run:
         description: 'Delete older workflow run'
         type: boolean
@@ -55,30 +54,11 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
-    - name: Load lib action
-      id: lib
-      uses: zhengmz/actions@lib
-
-    - name: Check functions by action
+    - name: Run workflow lib.yml
+      if: github.event.inputs.workflow == 'lib'
       run: |
         #set +e
-        ls -alh
-        echo ${{ steps.lib.outputs.functions }}
-        f=$(echo ${{ steps.lib.outputs.functions }} | base64 -d)
-        echo $f > /tmp/functions
-        cat /tmp/functions
-
-    - name: Check functions by curl
-      run: |
-        #set +e
-        ls -alh
-        [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
-        curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
-        source /tmp/functions
-        info "information"
-        warn "warning message"
-        error "error log"
-        log "notice"
+        gh workflow run lib.yml -f DELETE_OLD_RUN=$DELETE_OLD_RUN
 
     - name: Delete older workflow runs
       uses: Mattraks/delete-workflow-runs@v2
