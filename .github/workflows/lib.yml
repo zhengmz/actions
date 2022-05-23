@@ -11,6 +11,8 @@ on:
     branches:
       - 'master'
       - 'lib'
+
+  push:
     paths:
       - '**/lib.yml'
       - 'functions'
