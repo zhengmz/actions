@@ -35,7 +35,7 @@ fi
 url="https://oapi.dingtalk.com/robot/send?access_token=${token}"
 [[ -n "${webhook}" ]] && url="${webhook}"
 
-if [ -n "$secret" ]; then
+if [[ -n "$secret" ]]; then
 	timestamp=$(echo $[$(date +%s%N)/1000000])
 	sign="${timestamp}\n${secret}"
 	sign=$(echo -en "$sign" | openssl dgst -sha256 -hmac "$secret" -binary)
@@ -64,7 +64,7 @@ fi
 
 if [[ -n "${keyword}" ]]; then
 	title=$(echo "$body" | jq -r .title)
-	if [[ -n "$title" ]]
+	if [[ -n "$title" ]]; then
 		body=$(echo "$body" | jq ".title=\"$title \n keyword: $keyword\"")
 	else
 		content=$(echo "$body" | jq -r .text.content)

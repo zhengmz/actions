@@ -109,7 +109,10 @@ jobs:
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
         secret: ${{ secrets.DINGTALK_SECRET }}
         keyword: ${{ secrets.DINGTALK_KEYWORD }}
-        content: "我就是我, 是不一样的烟火"
+        content: |
+          {
+              "content": "我就是我, 是不一样的烟火"
+          }
 
     - name: Output
       id: check
