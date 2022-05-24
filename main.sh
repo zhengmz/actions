@@ -47,7 +47,7 @@ if [[ -z "$body" && -z "$content" ]]; then
 	error_exit "body or content is required"
 fi
 
-type_arr=(
+msgtype_arr=(
 text
 link
 markdown
@@ -56,15 +56,14 @@ feedCard
 )
 
 if [[ -z "$body" ]]; then
-	echo "${type_arr[@]}" | grep -wq "$msgtype" || error_exit "not valid msgtype [$msgtype]"
+	echo "${msgtype_arr[@]}" | grep -wq "$msgtype" || error_exit "not valid msgtype [$msgtype]"
 	body="{\"msgtype\": \"${msgtype}\", \"${msgtype}\": $content"
 	[[ "$at" == "all" ]] && at='{"isAtAll": true}'
 	[[ -n "$at" ]] && body="${body},\"at\": $at}" || body="${body}}"
 fi
 
 if [[ -n "${keyword}" ]]; then
-	info "process keyword..."
-	info "body:$body"
+	info "add keyword to title or content..."
 	msgtype=$(echo "$body" | jq -r .msgtype)
 	key=".${msgtype}.title"
 	case $msgtype in

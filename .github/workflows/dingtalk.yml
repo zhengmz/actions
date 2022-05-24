@@ -23,22 +23,6 @@ on:
         type: string
         required: false
         default: 'true'
-      token:
-        description: 'token for DingTalk bot'
-        type: string
-        required: false
-      webhook:
-        description: 'webhook for DingTalk bot'
-        type: string
-        required: false
-      secret:
-        description: 'secret for DingTalk bot'
-        type: string
-        required: false
-      keyword:
-        description: 'keyword for DingTalk bot'
-        type: string
-        required: false
       ignore_error:
         description: 'ignore if action failure'
         type: string
@@ -60,6 +44,20 @@ on:
       body:
         description: 'body for DingTalk message in JSON format'
         type: string
+        required: false
+
+    secrets:
+      token:
+        description: 'token for DingTalk bot'
+        required: false
+      webhook:
+        description: 'webhook for DingTalk bot'
+        required: false
+      secret:
+        description: 'secret for DingTalk bot'
+        required: false
+      keyword:
+        description: 'keyword for DingTalk bot'
         required: false
 
     outputs:
@@ -100,9 +98,23 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
-    - name: Send text message
-      #uses: zhengmz/actions@lib
+    - name: Send message by workflow_call
       uses: ./
+      if: github.event.inputs.token != "" || github.event.inputs.webhook != ""
+      with:
+        token: ${{ secrets.DINGTALK_TOKEN }}
+        webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+        secret: ${{ secrets.DINGTALK_SECRET }}
+        keyword: ${{ secrets.DINGTALK_KEYWORD }}
+        msgtype: ${{ github.event.inputs.msgtype }}
+        at: ${{ github.event.inputs.at }}
+        content: ${{ github.event.inputs.content }}
+        ignore_error: ${{ github.event.inputs.ignore_error }}
+        body: ${{ github.event.inputs.body }}
+
+    - name: Send text message
+      uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -115,8 +127,8 @@ jobs:
           }
 
     - name: Send link message
-      #uses: zhengmz/actions@lib
       uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -134,8 +146,9 @@ jobs:
            }
 
     - name: Send markdown message
-      #uses: zhengmz/actions@lib
-      uses: ./
+      uses: zhengmz/actions@dingtalk
+      #uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -149,8 +162,8 @@ jobs:
         at: "all"
 
     - name: Send actionCard message
-      #uses: zhengmz/actions@lib
       uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -170,8 +183,8 @@ jobs:
           }
 
     - name: Send actionCard message multi button
-      #uses: zhengmz/actions@lib
       uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -198,8 +211,8 @@ jobs:
           }
 
     - name: Send feedCard message
-      #uses: zhengmz/actions@lib
       uses: ./
+      if: github.event_name == 'push'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
