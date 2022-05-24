@@ -131,7 +131,6 @@ jobs:
 
     - name: Send link message
       uses: ./
-      #if: github.event_name == 'push'
       if: github.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
