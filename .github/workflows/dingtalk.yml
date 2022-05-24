@@ -1,0 +1,128 @@
+#=================================================
+# Description: CI for dingtalk action
+# Lisence: MIT
+# Author: zhengmz
+#=================================================
+
+name: DingTalk CI
+
+on: 
+  push:
+    branches:
+      - 'dingtalk'
+    paths:
+      - '**/dingtalk.yml'
+      - 'main.sh'
+      - 'action.yml'
+
+  # Be a reusable workflow
+  workflow_call:
+    inputs:
+      delete_run:
+        description: 'Delete older workflow run'
+        type: string
+        required: false
+        default: 'true'
+      token:
+        description: 'token for DingTalk bot'
+        type: string
+        required: false
+      webhook:
+        description: 'webhook for DingTalk bot'
+        type: string
+        required: false
+      secret:
+        description: 'secret for DingTalk bot'
+        type: string
+        required: false
+      keyword:
+        description: 'keyword for DingTalk bot'
+        type: string
+        required: false
+      ignore_error:
+        description: 'ignore if action failure'
+        type: string
+        required: false
+        default: 'true'
+      msgtype:
+        description: 'msg type'
+        type: string
+        required: false
+        default: 'markdown'
+      content:
+        description: 'content for DingTalk message in JSON format'
+        type: string
+        required: false
+      at:
+        description: 'at users in JSON format or "all"'
+        type: string
+        required: false
+      body:
+        description: 'body for DingTalk message in JSON format'
+        type: string
+        required: false
+
+    outputs:
+      status:
+        description: "The status of workflow"
+        value: ${{ jobs.build.outputs.status }}
+
+env:
+  DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # For delete workflow
+    permissions:
+      actions: write
+
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Get system infomation
+      run: |
+        #set +e
+        echo "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)"
+        echo "UserName: $(whoami)"
+        echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB')\n"
+        echo -e "Disk space: \n$(df -h)\n"
+        echo -e "Environment: \n$(env)\n"
+        echo "Github object json:"
+        cat << EOF
+          ${{ toJson(github) }}
+        EOF
+
+    - name: msgtype is text
+      #uses: zhengmz/actions@lib
+      uses: ./
+      with:
+        msgtype: "text"
+        #token: ${{ secrets.DINGTALK_TOKEN }}
+        webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+        secret: ${{ secrets.DINGTALK_SECRET }}
+        keyword: ${{ secrets.DINGTALK_KEYWORD }}
+        content: "我就是我, 是不一样的烟火"
+
+    - name: Output
+      id: check
+      run: |
+        echo "::set-output name=status::success"
+
+    - name: Delete older workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      if: env.DELETE_OLD_RUN == 'true'
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 0
+        keep_minimum_runs: 3
+        delete_workflow_pattern: ${{ github.workflow }}
+

@@ -1,0 +1,56 @@
+name: 'DingTalk Notify Actions'
+author: 'zhengmz'
+description: 'GitHub Actions Notify message to DingTalk'
+inputs:
+  token:
+    description: 'token for DingTalk bot'
+    required: false
+  webhook:
+    description: 'webhook for DingTalk bot'
+    required: false
+  secret:
+    description: 'secret for DingTalk bot'
+    required: false
+  keyword:
+    description: 'keyword for DingTalk bot'
+    required: false
+  ignore_error:
+    description: 'ignore if action failure'
+    required: false
+    default: 'true'
+  msgtype:
+    description: 'msg type'
+    required: false
+    default: 'markdown'
+  content:
+    description: 'content for DingTalk message in JSON format'
+    required: false
+  at:
+    description: 'at users in JSON format or "all"'
+    required: false
+  body:
+    description: 'body for DingTalk message in JSON format'
+    required: false
+
+runs:
+  using: "composite"
+  steps: 
+    # In 'composite' mode, cannot automatically get INPUT_<VARIABLE_NAME>
+    # see: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#example-specifying-inputs
+    - run: $GITHUB_ACTION_PATH/main.sh
+      env:
+        token: ${{ inputs.token }}
+        webhook: ${{ inputs.webhook }}
+        secret: ${{ inputs.secret }}
+        keyword: ${{ inputs.keyword }}
+        ignore_error: ${{ inputs.ignore_error }}
+        msgtype: ${{ inputs.msgtype }}
+        content: ${{ inputs.content }}
+        at: ${{ inputs.at }}
+        body: ${{ inputs.body }}
+      shell: bash
+
+branding:
+  color: 'blue'
+  icon: 'send'
+
