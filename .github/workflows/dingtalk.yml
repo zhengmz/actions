@@ -99,7 +99,7 @@ jobs:
         EOF
 
     - name: Send message by workflow_call
-      uses: ./
+      uses: zhengmz/actions@dingtalk
       #if: github.event.inputs.token != "" || github.event.inputs.webhook != ""
       if: github.event_name == 'workflow_dispatch'
       with:
