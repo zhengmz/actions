@@ -42,7 +42,6 @@ jobs:
     if: github.event.inputs.workflow == 'dingtalk'
     secrets: inherit
     with:
-      delete_run: ${{ github.event.inputs.delete_run }}
       msgtype: "text"
       content: |
         {
