@@ -12,9 +12,19 @@ runs:
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       run: |
+        source $GITHUB_ACTION_PATH/functions
+        info "set output: cat functions and sed..."
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
-        echo "$o"
         echo "::set-output name=functions::$o"
+        info "success"
+        echo "
+          # Usage example:
+          - name: Check functions by action
+            env:
+              f: ${{ steps.lib.outputs.functions }}
+            run: |
+              echo \"\$f\" | sed 's/\\n/\n/g' > /tmp/functions
+         "
       shell: bash
 
 branding:

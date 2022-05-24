@@ -15,21 +15,9 @@ on:
       - 'functions'
       - 'action.yml'
 
-  # Allows you to run this workflow manually from the Actions tab
-  # Manual dispatch must be in the default branch.
-  workflow_dispatch:
-    inputs:
-      delete_run:
-        description: 'Delete older workflow run'
-        type: boolean
-        required: true
-        default: 'true'
-
 env:
-  DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.delete_run || 'true' }}
-
-#env:
-#  DELETE_OLD_RUN: 'true'
+  DELETE_OLD_RUN: 'true'
+  IMPORT_ACTION: 'true'
 
 jobs:
   build:
@@ -58,33 +46,34 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
-    - name: Load lib action
+    - name: Import lib action
+      if: env.IMPORT_ACTION == 'true'
       id: lib
       uses: zhengmz/actions@lib
 
-    - name: Check functions by action
+    - name: Source functions by action
+      if: env.IMPORT_ACTION == 'true'
       env:
-        fname: /tmp/functions2
         f: ${{ steps.lib.outputs.functions }}
       run: |
         #set +e
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
         echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
-        cat /tmp/functions
+        #cat /tmp/functions
         source /tmp/functions
-        info "information"
-        warn "warning message"
-        error "error log"
-        log "notice"
 
-    - name: Check functions by curl
+    - name: Source functions by curl
+      if: env.IMPORT_ACTION != 'true'
       run: |
         #set +e
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
         curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
         source /tmp/functions
+
+    - name: Check functions
+      run: |
         info "information"
         warn "warning message"
         error "error log"

@@ -4,10 +4,10 @@
 
 Shell Library for other Action.
 
-# Usage
+## Usage by curl
 
 ```shell
-# load lib
+# Import lib by curl
 curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
 source /tmp/functions
 
@@ -18,5 +18,26 @@ info "information"
 warn "warnning message"
 error "error log"
 log "notice"
+```
+
+## Usage by action
+
+```yaml
+- name: Import lib action
+  if: env.IMPORT_ACTION == 'true'
+  id: lib
+  uses: zhengmz/actions@lib
+
+- name: Source functions by action
+  if: env.IMPORT_ACTION == 'true'
+  env:
+    f: ${{ steps.lib.outputs.functions }}
+  run: |
+    echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
+    source /tmp/functions
+    info "information"
+    warn "warning message"
+    error "error log"
+    log "notice"
 ```
 
