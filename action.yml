@@ -24,6 +24,7 @@ runs:
               f: ${{ steps.lib.outputs.functions }}
             run: |
               echo \"\$f\" | sed 's/\\n/\n/g' > /tmp/functions
+              source /tmp/functions
          "
       shell: bash
 

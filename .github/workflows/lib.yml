@@ -60,7 +60,6 @@ jobs:
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
         echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
-        #cat /tmp/functions
         source /tmp/functions
         info "information"
         warn "warning message"
