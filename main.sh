@@ -62,10 +62,11 @@ if [[ -z "$body" ]]; then
 	[[ -n "$at" ]] && body="${body},\"at\": $at}" || body="${body}}"
 fi
 
-info "body:$body"
-
 if [[ -n "${keyword}" ]]; then
+	info "process keyword..."
+	info "body:$body"
 	msgtype=$(echo "$body" | jq -r .msgtype)
+	info "msgtype:$msgtype"
 	title=$(echo "$body" | jq -r ".${msgtype}.title")
 	info "title:$title"
 	if [[ -n "$title" && "$title" != "null" ]]; then
