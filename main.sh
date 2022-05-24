@@ -66,15 +66,17 @@ if [[ -n "${keyword}" ]]; then
 	info "process keyword..."
 	info "body:$body"
 	msgtype=$(echo "$body" | jq -r .msgtype)
-	info "msgtype:$msgtype"
-	title=$(echo "$body" | jq -r ".${msgtype}.title")
-	info "title:$title"
-	if [[ -n "$title" && "$title" != "null" ]]; then
-		body=$(echo "$body" | jq ".${msgtype}.title=\"$title \n keyword: $keyword\"")
-	else
-		content=$(echo "$body" | jq -r .text.content)
-		body=$(echo "$body" | jq ".text.content=\"$content \n keyword: $keyword\"")
-	fi
+	key=".${msgtype}.title"
+	case $msgtype in
+		text)
+			key=".text.content"
+			;;
+		feedCard)
+			key=".feedCard.link[0].title"
+			;;
+	esac
+	value=$(echo "$body" | jq -r "${key}")
+	body=$(echo "$body" | jq "${key}=\"$value \n keyword: $keyword\"")
 fi
 
 info "body:$body"
