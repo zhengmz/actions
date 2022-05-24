@@ -23,7 +23,7 @@ runs:
             env:
               f: \$ {{ steps.<id>.outputs.functions }}
             run: |
-              echo \"\$f\" | sed 's/\\n/\n/g' > /tmp/functions
+              echo \"\$f\" | sed 's/\\\\n/\\n/g' > /tmp/functions
               source /tmp/functions
          "
       shell: bash
