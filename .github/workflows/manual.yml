@@ -38,7 +38,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    needs: call-lib-yml
+    #needs: call-lib-yml
 
     # For delete workflow
     permissions:
