@@ -38,8 +38,8 @@ on:
 env:
   #DELETE_OLD_RUN: 'true'
   #IMPORT_ACTION: 'true'
-  DELETE_OLD_RUN: ${{ github.event_name == 'workflow_call' && github.event.inputs.delete_run || 'true' }}
-  IMPORT_ACTION: ${{ github.event_name == 'workflow_call' && github.event.inputs.import_action || 'true' }}
+  DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
+  IMPORT_ACTION: ${{ github.event.inputs.import_action || 'true' }}
 
 jobs:
   build:
