@@ -17,7 +17,7 @@ on:
 
 env:
   DELETE_OLD_RUN: 'true'
-  IMPORT_ACTION: 'true'
+  IMPORT_ACTION: 'false'
 
 jobs:
   build:
