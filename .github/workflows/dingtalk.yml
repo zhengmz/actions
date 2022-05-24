@@ -67,7 +67,7 @@ on:
 
 env:
   DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
-  NEED_CI: ${{ github.event_name == 'push' && contains(github.event.message, 'skip') && 'false' || 'true' }}
+  NEED_CI: ${{ github.event_name == 'push' && ! contains(github.event.message, 'skip') && 'true' || 'false' }}
 
 jobs:
   build:
@@ -117,7 +117,7 @@ jobs:
     - name: Send text message
       uses: ./
       #if: github.event_name == 'push' && ! contains(github.event.message, 'skip')
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -131,7 +131,7 @@ jobs:
 
     - name: Send link message
       uses: ./
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -152,7 +152,7 @@ jobs:
       uses: zhengmz/actions@dingtalk
       #uses: ./
       #if: github.event_name == 'push'
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -168,7 +168,7 @@ jobs:
     - name: Send actionCard message
       uses: ./
       #if: github.event_name == 'push'
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -190,7 +190,7 @@ jobs:
     - name: Send actionCard message multi button
       uses: ./
       #if: github.event_name == 'push'
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -219,7 +219,7 @@ jobs:
     - name: Send feedCard message
       uses: ./
       #if: github.event_name == 'push'
-      if: github.NEED_CI == 'true'
+      if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
