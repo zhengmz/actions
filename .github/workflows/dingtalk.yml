@@ -67,7 +67,7 @@ on:
 
 env:
   DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
-  NEED_CI: ${{ github.event_name == 'push' && ! contains(github.event.commits.message, 'skip') && 'true' || 'false' }}
+  NEED_CI: ${{ github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip') && 'true' || 'false' }}
 
 jobs:
   build:
@@ -116,10 +116,10 @@ jobs:
 
     - name: Send text message
       uses: ./
-      if: github.event_name == 'push' && ! contains(github.event.commits.message, 'skip')
+      if: github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip')
       #if: env.NEED_CI == 'true'
       env:
-        commit_msg: ${{ github.event.commits.message }}
+        commit_msg: ${{ github.event.head_commit.message }}
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
