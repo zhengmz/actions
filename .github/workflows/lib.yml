@@ -24,12 +24,12 @@ on:
         type: string
         required: true
         default: 'true'
-      import_action:
+      import_mode:
         description: 'Import lib by action'
         #type: boolean
         type: string
         required: false
-        default: 'true'
+        default: 'action'
     outputs:
       status:
         description: "The status of workflow"
@@ -39,7 +39,7 @@ env:
   #DELETE_OLD_RUN: 'true'
   #IMPORT_ACTION: 'true'
   DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
-  IMPORT_ACTION: ${{ github.event.inputs.import_action || 'true' }}
+  IMPORT_MODE: ${{ github.event.inputs.import_mode || 'action' }}
 
 jobs:
   build:
@@ -72,7 +72,7 @@ jobs:
         EOF
 
     - name: Import lib action
-      if: env.IMPORT_ACTION == 'true'
+      if: env.IMPORT_MODE == 'action'
       id: lib
       uses: zhengmz/actions@lib
 
