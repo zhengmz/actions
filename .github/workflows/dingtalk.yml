@@ -67,7 +67,7 @@ on:
 
 env:
   DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
-  NEED_CI: ${{ github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip') && 'true' || 'false' }}
+  PUSH_CI: ${{ github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip') && 'true' || 'false' }}
 
 jobs:
   build:
@@ -99,6 +99,12 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
+        set +e
+        echo "Inputs object json:"
+        cat << EOF
+          ${{ toJson(inputs) }}
+        EOF
+
     - name: Send message by workflow_call
       uses: zhengmz/actions@dingtalk
       #if: github.event.inputs.token != "" || github.event.inputs.webhook != ""
@@ -116,8 +122,8 @@ jobs:
 
     - name: Send text message
       uses: ./
-      if: github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip')
-      #if: env.NEED_CI == 'true'
+      #if: github.event_name == 'push' && ! contains(github.event.head_commit.message, 'skip')
+      if: env.PUSH_CI == 'true'
       env:
         commit_msg: ${{ github.event.head_commit.message }}
       with:
@@ -133,7 +139,7 @@ jobs:
 
     - name: Send link message
       uses: ./
-      if: env.NEED_CI == 'true'
+      if: env.PUSH_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -154,7 +160,7 @@ jobs:
       uses: zhengmz/actions@dingtalk
       #uses: ./
       #if: github.event_name == 'push'
-      if: env.NEED_CI == 'true'
+      if: env.PUSH_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -170,7 +176,7 @@ jobs:
     - name: Send actionCard message
       uses: ./
       #if: github.event_name == 'push'
-      if: env.NEED_CI == 'true'
+      if: env.PUSH_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -192,7 +198,7 @@ jobs:
     - name: Send actionCard message multi button
       uses: ./
       #if: github.event_name == 'push'
-      if: env.NEED_CI == 'true'
+      if: env.PUSH_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -221,7 +227,7 @@ jobs:
     - name: Send feedCard message
       uses: ./
       #if: github.event_name == 'push'
-      if: env.NEED_CI == 'true'
+      if: env.PUSH_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
