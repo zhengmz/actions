@@ -32,6 +32,8 @@ jobs:
   call-lib-yml:
     uses: zhengmz/actions/.github/workflows/lib.yml@lib
     if: github.event.inputs.workflow == 'lib'
+    with:
+      delete_run: ${{ github.event.inputs.delete_run }}
 
   build:
     runs-on: ubuntu-latest
