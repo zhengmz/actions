@@ -62,6 +62,10 @@ jobs:
         echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
         #cat /tmp/functions
         source /tmp/functions
+        info "information"
+        warn "warning message"
+        error "error log"
+        log "notice"
 
     - name: Source functions by curl
       if: env.IMPORT_ACTION != 'true'
