@@ -15,9 +15,29 @@ on:
       - 'functions'
       - 'action.yml'
 
+  # Be a reusable workflow
+  workflow_call:
+    inputs:
+      delete_run:
+        description: 'Delete older workflow run'
+        type: boolean
+        required: true
+        default: 'true'
+      import_action:
+        description: 'Import lib by action'
+        type: boolean
+        required: false
+        default: 'true'
+    outputs:
+      status:
+        description: "The status of workflow"
+        value: ${{ jobs.build.outputs.status }}
+
 env:
-  DELETE_OLD_RUN: 'true'
-  IMPORT_ACTION: 'true'
+  #DELETE_OLD_RUN: 'true'
+  #IMPORT_ACTION: 'true'
+  DELETE_OLD_RUN: ${{ github.event_name == 'workflow_call' && github.event.inputs.delete_run || 'true' }}
+  IMPORT_ACTION: ${{ github.event_name == 'workflow_call' && github.event.inputs.import_action || 'true' }}
 
 jobs:
   build:
@@ -28,6 +48,9 @@ jobs:
       actions: write
 
     if: github.event.repository.owner.id == github.event.sender.id
+
+    outputs:
+      status: ${{ steps.check.outputs.status }}
 
     steps:
     - name: Checkout
@@ -52,6 +75,7 @@ jobs:
       uses: zhengmz/actions@lib
 
     - name: Use lib functions
+      id: check
       env:
         f: ${{ steps.lib.outputs.functions }}
       run: |
@@ -68,6 +92,7 @@ jobs:
         warn "warning message"
         error "error log"
         log "notice"
+        echo "::set-output name=status::success"
 
     - name: Delete older workflow runs
       uses: Mattraks/delete-workflow-runs@v2
