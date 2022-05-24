@@ -21,7 +21,7 @@ runs:
           # Usage example:
           - name: Check functions by action
             env:
-              f: \${{ steps.<id>.outputs.functions }}
+              f: steps.<id>.outputs.functions
             run: |
               echo \"\$f\" | sed 's/\\n/\n/g' > /tmp/functions
               source /tmp/functions
