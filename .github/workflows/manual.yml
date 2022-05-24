@@ -29,6 +29,10 @@ env:
   DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.delete_run || 'true' }}
 
 jobs:
+  call-lib-yml:
+    uses: zhengmz/actions/.github/workflows/lib.yml@lib
+    if: github.event.inputs.workflow == 'lib'
+
   build:
     runs-on: ubuntu-latest
 
