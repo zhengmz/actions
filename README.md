@@ -139,8 +139,13 @@ jobs:
 
 已知情况：
 
-- 传递给被重用的子流程的 github 仍然是主流程的参数，并没有 `workflow_call` 的事件名
+- 传递给被重用的子流程的 github 仍然是主流程的参数，并没有 `workflow_call` 的事件名，需持续关注其变化
 - 传递 boolean 变量时，主流程会使用 'true' 字符串，而子流程则严格校验 boolean，所以在子流程中改为 string 类型
 - 在主流程中使用 needs 时，如果子流程被 skipped，则主流程也 skipped
 - 主流程中不使用 needs 时，其执行顺序无序，此时，无法获取子流程的 outputs
+
+但与 gh cli 对比，有两点优势：
+
+- 子流程的 yml 文件不必与流程的 yml 文件在同一分支
+- 子流程的运行过程有可视化界面
 

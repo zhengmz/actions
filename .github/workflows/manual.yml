@@ -29,6 +29,7 @@ env:
   DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.delete_run || 'true' }}
 
 jobs:
+  # Reusing sub workflow
   call-lib-yml:
     uses: zhengmz/actions/.github/workflows/lib.yml@lib
     if: github.event.inputs.workflow == 'lib'
@@ -63,6 +64,9 @@ jobs:
           ${{ toJson(github) }}
         EOF
 
+    # compare reusing workflow, gh cli have two disadvantage
+    #   - lib2.yml must be in same branch with this yml file
+    #   - and without visual process
     - name: Run workflow lib2.yml
       if: github.event.inputs.workflow == 'lib2'
       env:
