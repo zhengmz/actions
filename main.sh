@@ -66,7 +66,8 @@ info "body:$body"
 
 if [[ -n "${keyword}" ]]; then
 	msgtype=$(echo "$body" | jq -r .msgtype)
-	title=$(echo "$body" | jq -r ".${msgtype}.title")
+	title="$(echo \"$body\" | jq -r \".${msgtype}.title\")"
+	info "title:$title"
 	if [[ -n "$title" && "$title" != "null" ]]; then
 		body=$(echo "$body" | jq ".${msgtype}.title=\"$title \n keyword: $keyword\"")
 	else
