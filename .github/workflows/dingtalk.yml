@@ -67,7 +67,7 @@ on:
 
 env:
   DELETE_OLD_RUN: ${{ github.event.inputs.delete_run || 'true' }}
-  NEED_CI: ${{ github.event_name == 'push' && github.event.message =~ 'skip' && 'false' || 'true' }}
+  NEED_CI: github.event_name == 'push' && github.event.message =~ 'skip' && 'false' || 'true'
 
 jobs:
   build:
