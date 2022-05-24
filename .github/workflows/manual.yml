@@ -23,7 +23,7 @@ on:
         description: 'Delete older workflow run'
         type: boolean
         required: true
-        default: 'true'
+        default: true
 
 env:
   DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.delete_run || 'true' }}
