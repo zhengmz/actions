@@ -62,9 +62,11 @@ if [[ -z "$body" ]]; then
 	[[ -n "$at" ]] && body="${body},\"at\": $at}" || body="${body}}"
 fi
 
+info "body:$body"
+
 if [[ -n "${keyword}" ]]; then
 	title=$(echo "$body" | jq -r .title)
-	if [[ -n "$title" ]]; then
+	if [[ -n "$title" && "$title" != "null" ]]; then
 		body=$(echo "$body" | jq ".title=\"$title \n keyword: $keyword\"")
 	else
 		content=$(echo "$body" | jq -r .text.content)
