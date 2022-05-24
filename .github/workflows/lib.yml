@@ -22,12 +22,12 @@ on:
         description: 'Delete older workflow run'
         type: boolean
         required: true
-        default: 'true'
+        default: true
       import_action:
         description: 'Import lib by action'
         type: boolean
         required: false
-        default: 'true'
+        default: true
     outputs:
       status:
         description: "The status of workflow"
