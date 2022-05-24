@@ -17,7 +17,7 @@ on:
 
 env:
   DELETE_OLD_RUN: 'true'
-  IMPORT_ACTION: 'false'
+  IMPORT_ACTION: 'true'
 
 jobs:
   build:
@@ -51,32 +51,19 @@ jobs:
       id: lib
       uses: zhengmz/actions@lib
 
-    - name: Source functions by action
-      if: env.IMPORT_ACTION == 'true'
+    - name: Check functions
       env:
         f: ${{ steps.lib.outputs.functions }}
       run: |
         #set +e
         ls -alh
         [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
-        echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
+        if [ -n "$f" ]; then
+          echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
+        else
+          curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
+        fi
         source /tmp/functions
-        info "information"
-        warn "warning message"
-        error "error log"
-        log "notice"
-
-    - name: Source functions by curl
-      if: env.IMPORT_ACTION != 'true'
-      run: |
-        #set +e
-        ls -alh
-        [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
-        curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
-        source /tmp/functions
-
-    - name: Check functions
-      run: |
         info "information"
         warn "warning message"
         error "error log"
