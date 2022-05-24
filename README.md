@@ -11,8 +11,6 @@ Shell Library for other Action.
 curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
 source /tmp/functions
 
-# Use lib in shell
-
 # echo message in different color
 info "information"
 warn "warnning message"
@@ -28,7 +26,7 @@ log "notice"
   id: lib
   uses: zhengmz/actions@lib
 
-- name: Source functions by action
+- name: Use functions by action
   if: env.IMPORT_ACTION == 'true'
   env:
     f: ${{ steps.lib.outputs.functions }}

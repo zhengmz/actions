@@ -51,7 +51,7 @@ jobs:
       id: lib
       uses: zhengmz/actions@lib
 
-    - name: Check functions
+    - name: Use lib functions
       env:
         f: ${{ steps.lib.outputs.functions }}
       run: |
