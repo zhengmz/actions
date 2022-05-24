@@ -116,8 +116,10 @@ jobs:
 
     - name: Send text message
       uses: ./
-      #if: github.event_name == 'push' && ! contains(github.event.message, 'skip')
-      if: env.NEED_CI == 'true'
+      if: github.event_name == 'push' && ! contains(github.event.commits.message, 'skip')
+      #if: env.NEED_CI == 'true'
+      env:
+        commit_msg: ${{ github.event.commits.message }}
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
         webhook: ${{ secrets.DINGTALK_WEBHOOK }}
@@ -131,7 +133,6 @@ jobs:
 
     - name: Send link message
       uses: ./
-      #if: github.event_name == 'push' && ! contains(github.event.commits.message, 'skip')
       if: env.NEED_CI == 'true'
       with:
         token: ${{ secrets.DINGTALK_TOKEN }}
