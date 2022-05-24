@@ -72,7 +72,7 @@ if [[ -n "${keyword}" ]]; then
 			key=".text.content"
 			;;
 		feedCard)
-			key=".feedCard.link[0].title"
+			key=".feedCard.links[0].title"
 			;;
 	esac
 	value=$(echo "$body" | jq -r "${key}")
