@@ -30,6 +30,10 @@ on:
         type: string
         required: false
         default: 'action'
+      dist_name:
+        description: 'dist file name for copying lib functions'
+        type: string
+        required: false
     outputs:
       status:
         description: "The status of workflow"
@@ -59,6 +63,8 @@ jobs:
       uses: actions/checkout@master
 
     - name: Get system infomation
+      env:
+        input_str: ${{ inputs && toJson(inputs) || '' }}
       run: |
         #set +e
         echo "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)"
@@ -68,15 +74,13 @@ jobs:
         echo -e "Environment: \n$(env)\n"
         #echo "Github object json:"
         #echo ${{ toJson(github) }}
-        #echo "inputs object json:"
-        #echo ${{ inputs && toJson(inputs) || '' }}
 
     - name: Import lib action
       if: env.IMPORT_MODE == 'action'
       id: lib
       uses: zhengmz/actions@lib
       with:
-        dist_name: /tmp/functions
+        dist_name: ${{ inputs.dist_name || '/tmp/functions' }}
 
     - name: Use lib functions
       id: check
