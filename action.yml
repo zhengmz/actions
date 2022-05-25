@@ -19,6 +19,7 @@ runs:
       env:
         dist_name: ${{ inputs.dist_name }}
       run: |
+        info "GITHUB_ACTION_PATH=${GITHUB_ACTION_PATH}"
         [[ -n "${dist_name}" ]] && cp $GITHUB_ACTION_PATH/functions ${dist_name}
         source $GITHUB_ACTION_PATH/functions
         info "set output: cat functions and sed..."
