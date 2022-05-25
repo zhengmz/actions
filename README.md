@@ -53,5 +53,5 @@ Various inputs are defined to let you configure the action:
 
 | Name | Required | Description | Default |
 | --- | :-: | --- | --- |
-| `dist` |  | dist file name for copying lib functions<br>set '' to disable copying | `functions` |
+| `dist` |  | dist file name for copying lib functions<br>set '' to disable copying | `/tmp/functions` |
 

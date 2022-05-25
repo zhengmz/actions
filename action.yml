@@ -6,7 +6,7 @@ inputs:
     description: 'dist file name for copying lib functions'
     type: string
     required: false
-    default: 'functions'
+    default: '/tmp/functions'
 outputs:
   functions:
     description: "Shell functions"
