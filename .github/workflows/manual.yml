@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       workflow:
-        description: 'choice sub workflow'
+        description: 'Choice sub workflow to run'
         type: choice
         required: true
         default: 'all'
