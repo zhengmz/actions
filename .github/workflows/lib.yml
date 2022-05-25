@@ -18,12 +18,6 @@ on:
   # Be a reusable workflow
   workflow_call:
     inputs:
-      delete_run:
-        description: 'Delete older workflow run'
-        #type: boolean
-        type: string
-        required: true
-        default: 'true'
       import_mode:
         description: 'Import lib by action'
         #type: boolean
@@ -42,8 +36,9 @@ on:
 env:
   #DELETE_OLD_RUN: 'true'
   #IMPORT_ACTION: 'true'
-  DELETE_OLD_RUN: ${{ inputs.delete_run || 'true' }}
+  DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
   IMPORT_MODE: ${{ inputs.import_mode || 'action' }}
+  DIST_NAME: ${{ inputs.dist_name || '/tmp/functions' }}
 
 jobs:
   build:
@@ -81,22 +76,23 @@ jobs:
       id: lib
       uses: zhengmz/actions@lib
       with:
-        dist_name: ${{ inputs.dist_name || '/tmp/functions' }}
+        dist_name: ${{ env.DIST_NAME }}
 
     - name: Use lib functions
       id: check
       env:
         f: ${{ steps.lib.outputs.functions }}
+        dist: ${{ env.DIST_NAME }}
       run: |
         #set +e
         ls -alh
-        [ -f /tmp/functions ] && cat /tmp/functions && rm -f /tmp/functions
+        [ -f $dist ] && cat $dist && rm -f $dist
         if [ -n "$f" ]; then
-          echo "$f" | sed 's/\\n/\n/g' > /tmp/functions
+          echo "$f" | sed 's/\\n/\n/g' > $dist
         else
-          curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
+          curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > $dist
         fi
-        source /tmp/functions
+        source $dist
         info "information"
         warn "warning message"
         error "error log"

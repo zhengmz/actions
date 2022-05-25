@@ -14,12 +14,6 @@ outputs:
 runs:
   using: "composite"
   steps: 
-    - name: get system information
-      run: |
-        echo -e "ACTION Environment: \n$(env | grep ACTION)\n"
-        echo "inputs object json: ${{ inputs != '' && toJson(inputs)  || ''}}"
-      shell: bash
-
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       env:
@@ -34,15 +28,13 @@ runs:
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
         echo "::set-output name=functions::$o"
         info "success"
-        ls -alh $GITHUB_ACTION_PATH
-        ls -alh
         echo "
           # Usage by file:
           - name: Check functions by file
             run: |
               source \$dist_name
 
-          # Usage by outputs:
+          # Usage by steps.*.outputs:
           - name: Check functions by outputs
             env:
               f: \$ {{ steps.<id>.outputs.functions }}
