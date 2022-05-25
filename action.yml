@@ -40,7 +40,7 @@ runs:
         content: |
           {
              "title": "Github Action Notify",
-             "text": "# Github Action Notify \n ---- \n ## Repository \n > ${{ github.repositoryUrl }} \n > ref: ${{ github.ref_name }} \n  --- \n ## tmate session info \n - CLI: ${{ env.TMATE_SSH }} \n - WEB: <${{ env.TMATE_WEB }}> \n --- \n > Tips: Run 'touch ${{ env.KEEP_FILE }}' to keepalive or 'exit' to next step"
+             "text": "# Github Action Notify \n ---- \n ## Repository \n > ${{ github.event.repository.url }} \n\n > ref: ${{ github.ref_name }} \n  --- \n ## tmate session info \n - CLI: ${{ env.TMATE_SSH }} \n - WEB: <${{ env.TMATE_WEB }}> \n --- \n > Tips: Run 'touch ${{ env.KEEP_FILE }}' to keepalive or 'exit' to next step"
           }
 
     - run: $GITHUB_ACTION_PATH/wait.sh ${{ inputs.timeout }}
