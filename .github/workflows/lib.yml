@@ -66,15 +66,19 @@ jobs:
         echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB')\n"
         echo -e "Disk space: \n$(df -h)\n"
         echo -e "Environment: \n$(env)\n"
-        echo "Github object json:"
-        cat << EOF
-          ${{ toJson(github) }}
-        EOF
+        #echo "Github object json:"
+        #cat << EOF
+        #    ${{ toJson(github) }}
+        #EOF
+        #echo "inputs object json:"
+        #echo ${{ toJson(inputs) }}
 
     - name: Import lib action
       if: env.IMPORT_MODE == 'action'
       id: lib
       uses: zhengmz/actions@lib
+      with:
+        dist_name: /tmp/functions
 
     - name: Use lib functions
       id: check

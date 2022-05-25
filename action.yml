@@ -1,6 +1,11 @@
 name: 'Libs Actions'
 author: 'zhengmz'
 description: 'Shell Library for other action'
+inputs:
+  dist_name:
+    description: 'dist file name for copying lib functions'
+    type: string
+    required: false
 outputs:
   functions:
     description: "Shell functions"
@@ -11,16 +16,25 @@ runs:
   steps: 
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
+      env:
+        dist: ${{ inputs.dist_name }}
       run: |
         source $GITHUB_ACTION_PATH/functions
         info "set output: cat functions and sed..."
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
         echo "::set-output name=functions::$o"
         info "success"
+        ls -alh $GITHUB_ACTION_PATH
         ls -alh
+        [[ -n "$dist" ]] && cp $GITHUB_ACTION_PATH/functions "$dist"
         echo "
-          # Usage example:
-          - name: Check functions by action
+          # Usage by file:
+          - name: Check functions by file
+            run: |
+              source \"\$dist\"
+
+          # Usage by outputs:
+          - name: Check functions by outputs
             env:
               f: \$ {{ steps.<id>.outputs.functions }}
             run: |
