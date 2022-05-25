@@ -17,7 +17,7 @@ runs:
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       env:
-        dist: ${{ inputs.dist_name }}
+        dist_name: ${{ inputs.dist_name }}
       run: |
         source $GITHUB_ACTION_PATH/functions
         info "set output: cat functions and sed..."
@@ -26,12 +26,12 @@ runs:
         info "success"
         ls -alh $GITHUB_ACTION_PATH
         ls -alh
-        [[ -n "$dist" ]] && cp $GITHUB_ACTION_PATH/functions "$dist"
+        [[ -n "${dist_name}" ]] && cp $GITHUB_ACTION_PATH/functions ${dist_name}
         echo "
           # Usage by file:
           - name: Check functions by file
             run: |
-              source \"\$dist\"
+              source \$dist_name
 
           # Usage by outputs:
           - name: Check functions by outputs
