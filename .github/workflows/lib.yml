@@ -71,7 +71,7 @@ jobs:
         echo -e "Disk space: \n$(df -h)\n"
         echo -e "Environment: \n$(env)\n"
         #echo "Github object json:"
-        #echo ${{ toJson(github) }}
+        #echo "${{ toJson(github) }}"
 
     - name: Import lib action
       if: env.IMPORT_MODE == 'action'

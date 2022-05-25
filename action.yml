@@ -19,6 +19,7 @@ runs:
       env:
         dist_name: ${{ inputs.dist_name }}
       run: |
+        [[ -n "${dist_name}" ]] && cp $GITHUB_ACTION_PATH/functions ${dist_name}
         source $GITHUB_ACTION_PATH/functions
         info "set output: cat functions and sed..."
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
@@ -26,7 +27,6 @@ runs:
         info "success"
         ls -alh $GITHUB_ACTION_PATH
         ls -alh
-        [[ -n "${dist_name}" ]] && cp $GITHUB_ACTION_PATH/functions ${dist_name}
         echo "
           # Usage by file:
           - name: Check functions by file
