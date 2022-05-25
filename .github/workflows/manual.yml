@@ -36,6 +36,7 @@ jobs:
     if: github.event.inputs.workflow == 'lib'
     with:
       delete_run: ${{ github.event.inputs.delete_run }}
+      dist_name: ".functions"
 
   call-dingtalk-yml:
     uses: zhengmz/actions/.github/workflows/dingtalk.yml@dingtalk
