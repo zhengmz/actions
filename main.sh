@@ -22,16 +22,6 @@ error_exit() {
 	[[ "$ignore_error" == "true" ]] && exit 0 || exit 1
 }
 
-info "token:$token"
-info "webhook:$webhook"
-info "secret:$secret"
-info "keyword:$keyword"
-info "ignore_error:$ignore_error"
-info "msgtype:$msgtype"
-info "content:$content"
-info "at:$at"
-info "body:$body"
-
 if [[ -z "$token" && -z "$webhook" ]]; then
 	error_exit "token or webhook is required"
 fi
@@ -82,7 +72,6 @@ if [[ -n "${keyword}" ]]; then
 	body=$(echo "$body" | jq "${key}=\"$value \n keyword: $keyword\"")
 fi
 
-info "body:$body"
 info "Sending message to DingTalk..."
 
 errmsg=$(curl -sSX POST "${url}" \
