@@ -9,8 +9,12 @@
 set -e
 
 # source functions
-curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > /tmp/functions
-. /tmp/functions
+lib_file="/tmp/functions"
+if [ ! -f "$lib_file" ]; then
+	echo "get functions from web..."
+	curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > $lib_file
+fi
+. $lib_file
 
 # echo error log and exit
 error_exit() {
