@@ -16,13 +16,11 @@ if [ ! -f "$lib_file" ]; then
 fi
 . $lib_file
 
-KEEP_FILE="/tmp/keepalive"
-
 PRT_INTERVAL=${PRT_INTERVAL:-10}
 PRT_MSG="
 -----------------------------------------------------------------------------------
 To connect to this session copy and paste the following into a terminal or browser:
-⚡ CLI: ${TMATE_SSH}
+⚡ CLI: $(green ${TMATE_SSH})
 🔗 URL: ${TMATE_WEB}
 🔔 TIPS: Run 'touch ${KEEP_FILE}' to keepalive or 'exit' to next step
 -----------------------------------------------------------------------------------
