@@ -20,6 +20,7 @@ on:
           - all
           - lib
           - dingtalk
+          - tmate
       delete_run:
         description: 'Delete older workflow run'
         type: boolean
@@ -56,6 +57,17 @@ jobs:
       #  }
       at: "all"
       ignore_error: "false"
+
+  call-tmate-yml:
+    uses: zhengmz/actions/.github/workflows/tmate.yml@tmate
+    if: github.event.inputs.workflow == 'tmate' || github.event.inputs.workflow == 'all'
+    with:
+      timeout: 5
+    secrets:
+      dingtalk_token: ${{ secrets.DINGTALK_TOKEN }}
+      dingtalk_webhook: ${{ secrets.DINGTALK_WEBHOOK }}
+      dingtalk_secret: ${{ secrets.DINGTALK_SECRET }}
+      dingtalk_keyword: ${{ secrets.DINGTALK_KEYWORD }}
 
   build:
     runs-on: ubuntu-latest
