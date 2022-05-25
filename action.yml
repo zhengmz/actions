@@ -19,9 +19,6 @@ runs:
     - name: Send tmate session to dingtalk
       if: ${{ env.DINGTALK_TOKEN != '' || env.DINGTALK_WEBHOOK != '' }}
       uses: zhengmz/actions@dingtalk
-      env:
-        TMATE_SSH: ${{ steps.setup.outputs.TMATE_SSH }}
-        TMATE_WEB: ${{ steps.setup.outputs.TMATE_WEB }}
       with:
         token: ${{ env.DINGTALK_TOKEN }}
         webhook: ${{ env.DINGTALK_WEBHOOK }}
@@ -31,7 +28,7 @@ runs:
         content: |
           {
              "title": "Github Action Notify",
-             "text": "# Github Action Notify \n ---- \n ## Repository \n > ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} \n --- \n ## tmate session info \n - CLI: ${TMATE_SSH} \n - WEB: <${TMATE_WEB}>"
+             "text": "# Github Action Notify \n ---- \n ## Repository \n > ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }} \n --- \n ## tmate session info \n - CLI: ${{ steps.setup.outputs.TMATE_SSH }} \n - WEB: <${{ steps.setup.outputs.TMATE_WEB }}>"
           }
 
     - run: $GITHUB_ACTION_PATH/wait.sh ${{ inputs.timeout }}

@@ -46,7 +46,7 @@ on:
 
 env:
   DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
-  TIMEOUT: ${{ inputs.timeout || '3' }}
+  TIMEOUT: ${{ inputs.timeout || '1' }}
 
 jobs:
   build:
