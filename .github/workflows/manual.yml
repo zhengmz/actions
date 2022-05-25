@@ -12,14 +12,13 @@ on:
   workflow_dispatch:
     inputs:
       workflow:
-        description: 'Delete older workflow run'
+        description: 'choice sub workflow'
         type: choice
         required: true
         default: 'lib'
         options:
           - lib
           - dingtalk
-          - lib2
       delete_run:
         description: 'Delete older workflow run'
         type: boolean
@@ -88,14 +87,14 @@ jobs:
     # compare reusing workflow, gh cli have two disadvantage
     #   - lib2.yml must be in same branch with this yml file
     #   - and without visual process
-    - name: Run workflow lib2.yml
-      if: github.event.inputs.workflow == 'lib2'
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        set +e
-        #echo ${{ github.token }} | gh auth login --with-token
-        gh workflow run ${{ github.event.inputs.workflow }}.yml -f delete_run=$DELETE_OLD_RUN
+    #- name: Run workflow lib2.yml
+    #  if: github.event.inputs.workflow == 'lib2'
+    #  env:
+    #    GH_TOKEN: ${{ github.token }}
+    #  run: |
+    #    set +e
+    #    #echo ${{ github.token }} | gh auth login --with-token
+    #    gh workflow run ${{ github.event.inputs.workflow }}.yml -f delete_run=$DELETE_OLD_RUN
 
     - name: Delete older workflow runs
       uses: Mattraks/delete-workflow-runs@v2
