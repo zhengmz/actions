@@ -1,0 +1,107 @@
+#=================================================
+# Description: CI for tmate action
+# Lisence: MIT
+# Author: zhengmz
+#=================================================
+
+name: Tmate CI
+
+on: 
+  push:
+    branches:
+      - 'tmate'
+    paths:
+      - '**/tmate.yml'
+      - '*.sh'
+      - 'action.yml'
+
+  # Be a reusable workflow
+  workflow_call:
+    inputs:
+      timeout:
+        description: 'Import lib by action'
+        type: number
+        #type: string
+        required: false
+        default: '1'
+
+    secrets:
+      dingtalk_token:
+        description: 'token for DingTalk bot'
+        required: false
+      dingtalk_webhook:
+        description: 'webhook for DingTalk bot'
+        required: false
+      dingtalk_secret:
+        description: 'secret for DingTalk bot'
+        required: false
+      dingtalk_keyword:
+        description: 'keyword for DingTalk bot'
+        required: false
+
+    outputs:
+      status:
+        description: "The status of workflow"
+        value: ${{ jobs.build.outputs.status }}
+
+env:
+  DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
+  TIMEOUT: ${{ inputs.timeout || '3' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # For delete workflow
+    permissions:
+      actions: write
+
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Get system infomation
+      run: |
+        #set +e
+        echo "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)"
+        echo "UserName: $(whoami)"
+        echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB')\n"
+        echo -e "Disk space: \n$(df -h)\n"
+        #echo -e "Environment: \n$(env)\n"
+        echo -e "Github Environment: \n$(env | grep GITHUB)\n"
+        echo -e "Runner Environment: \n$(env | grep RUNNER)\n"
+        echo "Github object json: ${{ toJson(github) }}"
+        echo "job object json: ${{ toJson(job) }}"
+        echo "inputs object json: ${{ inputs != '' && toJson(inputs)  || ''}}"
+
+    - name: SSH connection to Actions
+      uses: zhengmz/actions@tmate
+      env:
+        DINGTALK_TOKEN: ${{ secrets.dingtalk_token }}
+        DINGTALK_WEBHOOK: ${{ secrets.dingtalk_webhook }}
+        DINGTALK_SECRET: ${{ secrets.dingtalk_secret }}
+        DINGTALK_KEYWORD: ${{ secrets.dingtalk_keyword }}
+      with:
+        timeout: ${{ env.TIMEOUT }}
+
+    - name: Output
+      id: check
+      run: |
+        echo "::set-output name=status::success"
+
+    - name: Delete older workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      #if: env.DELETE_OLD_RUN == 'true' && github.event_name != 'workflow_dispatch'
+      if: env.DELETE_OLD_RUN == 'true'
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 0
+        keep_minimum_runs: 3
+        delete_workflow_pattern: ${{ github.workflow }}
+

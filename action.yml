@@ -1,0 +1,28 @@
+name: 'Tmate to GitHub Actions'
+author: 'zhengmz'
+description: 'Connect to GitHub Actions VM via SSH for interactive debugging'
+inputs:
+  timeout:
+    description: 'Timeout for connection'
+    required: false
+    default: '30'
+
+runs:
+  using: "composite"
+  steps: 
+    - uses: zhengmz/actions@lib
+
+    - id: setup
+      run: $GITHUB_ACTION_PATH/setup.sh
+      shell: bash
+
+    - run: $GITHUB_ACTION_PATH/wait.sh ${{ input.timeout }}
+      env:
+        TMATE_SOCK: ${{ steps.setup.outputs.TMATE_SOCK }}
+        TMATE_SSH: ${{ steps.setup.outputs.TMATE_SSH }}
+        TMATE_WEB: ${{ steps.setup.outputs.TMATE_WEB }}
+      shell: bash
+
+branding:
+  icon: 'terminal'
+  color: 'gray-dark'
