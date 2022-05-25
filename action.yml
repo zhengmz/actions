@@ -14,14 +14,25 @@ outputs:
 runs:
   using: "composite"
   steps: 
+    - name: get system information
+      run: |
+        echo -e "Github Environment: \n$(env | grep GITHUB)\n"
+        echo -e "Runner Environment: \n$(env | grep RUNNER)\n"
+        echo "Github object json: ${{ toJson(github) }}"
+        echo "job object json: ${{ toJson(job) }}"
+        echo "inputs object json: ${{ inputs != '' && toJson(inputs)  || ''}}"
+
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       env:
         dist_name: ${{ inputs.dist_name }}
       run: |
-        info "GITHUB_ACTION_PATH=${GITHUB_ACTION_PATH}"
-        [[ -n "${dist_name}" ]] && cp $GITHUB_ACTION_PATH/functions ${dist_name}
         source $GITHUB_ACTION_PATH/functions
+        log "GITHUB_ACTION_PATH=${GITHUB_ACTION_PATH}"
+        if [[ -n "${dist_name}" ]]; then
+          info "cp lib funtions to $dist_name..."
+          cp $GITHUB_ACTION_PATH/functions ${dist_name}
+        fi
         info "set output: cat functions and sed..."
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
         echo "::set-output name=functions::$o"
