@@ -63,8 +63,6 @@ jobs:
       uses: actions/checkout@master
 
     - name: Get system infomation
-      env:
-        input_str: ${{ inputs && toJson(inputs) || '' }}
       run: |
         #set +e
         echo "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)"
