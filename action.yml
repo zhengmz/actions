@@ -38,8 +38,6 @@ runs:
     # In 'composite' mode, cannot automatically get INPUT_<VARIABLE_NAME>
     # see: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#example-specifying-inputs
     - uses: zhengmz/actions@lib
-      with:
-        dist_name: '/tmp/functions'
 
     - run: $GITHUB_ACTION_PATH/main.sh
       env:
