@@ -72,10 +72,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    needs:
-      - call-lib-yml
-      - call-dingtalk-yml
-      - call-tmate-yml
+    #needs:
+    #  - call-lib-yml
+    #  - call-dingtalk-yml
+    #  - call-tmate-yml
 
     # For delete workflow
     permissions:
