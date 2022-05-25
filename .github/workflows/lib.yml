@@ -24,7 +24,7 @@ on:
         type: string
         required: false
         default: 'action'
-      dist_name:
+      dist:
         description: 'dist file name for copying lib functions'
         type: string
         required: false
@@ -38,7 +38,7 @@ env:
   #IMPORT_ACTION: 'true'
   DELETE_OLD_RUN: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
   IMPORT_MODE: ${{ inputs.import_mode || 'action' }}
-  DIST_NAME: ${{ inputs.dist_name || '/tmp/functions' }}
+  DIST_NAME: ${{ inputs.dist || '/tmp/functions' }}
 
 jobs:
   build:
@@ -76,7 +76,7 @@ jobs:
       id: lib
       uses: zhengmz/actions@lib
       with:
-        dist_name: ${{ env.DIST_NAME }}
+        dist: ${{ env.DIST_NAME }}
 
     - name: Use lib functions
       id: check
@@ -86,7 +86,7 @@ jobs:
       run: |
         #set +e
         ls -alh
-        [ -f $dist ] && cat $dist && rm -f $dist
+        [ -n "$dist" -a -f $dist ] && cat $dist && rm -f $dist
         if [ -n "$f" ]; then
           echo "$f" | sed 's/\\n/\n/g' > $dist
         else

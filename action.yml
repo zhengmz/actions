@@ -2,10 +2,11 @@ name: 'Libs Actions'
 author: 'zhengmz'
 description: 'Shell Library for other action'
 inputs:
-  dist_name:
+  dist:
     description: 'dist file name for copying lib functions'
     type: string
     required: false
+    default: 'functions'
 outputs:
   functions:
     description: "Shell functions"
@@ -17,31 +18,19 @@ runs:
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
       env:
-        dist_name: ${{ inputs.dist_name }}
+        dist: ${{ inputs.dist }}
       run: |
         source $GITHUB_ACTION_PATH/functions
-        if [[ -n "${dist_name}" ]]; then
-          info "cp lib funtions to $dist_name..."
-          cp $GITHUB_ACTION_PATH/functions ${dist_name}
+        if [[ -n "${dist}" ]]; then
+          info "cp lib funtions to $dist..."
+          cp $GITHUB_ACTION_PATH/functions ${dist}
+        else
+          warn "disable copying lib funtions."
         fi
         info "set output: cat functions and sed..."
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
         echo "::set-output name=functions::$o"
         info "success"
-        echo "
-          # Usage by file:
-          - name: Check functions by file
-            run: |
-              source \$dist_name
-
-          # Usage by steps.*.outputs:
-          - name: Check functions by outputs
-            env:
-              f: \$ {{ steps.<id>.outputs.functions }}
-            run: |
-              echo \"\$f\" | sed 's/\\\\n/\\n/g' > /tmp/functions
-              source /tmp/functions
-         "
       shell: bash
 
 branding:

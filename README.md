@@ -22,12 +22,20 @@ log "notice"
 
 ```yaml
 - name: Import lib action
-  if: env.IMPORT_ACTION == 'true'
   id: lib
   uses: zhengmz/actions@lib
+  with:
+    dist: '/tmp/functions'
 
-- name: Use functions by action
-  if: env.IMPORT_ACTION == 'true'
+- name: Use functions by file
+  run: |
+    source /tmp/functions
+    info "information"
+    warn "warning message"
+    error "error log"
+    log "notice"
+
+- name: Use functions by outputs
   env:
     f: ${{ steps.lib.outputs.functions }}
   run: |
@@ -38,4 +46,12 @@ log "notice"
     error "error log"
     log "notice"
 ```
+
+## Inputs
+
+Various inputs are defined to let you configure the action:
+
+| Name | Required | Description | Default |
+| --- | :-: | --- | --- |
+| `dist` |  | dist file name for copying lib functions<br>set '' to disable copying | `functions` |
 
