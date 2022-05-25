@@ -17,6 +17,7 @@ runs:
         o="$(cat $GITHUB_ACTION_PATH/functions | sed ':a;N;s/\n/\\n/g;ta')"
         echo "::set-output name=functions::$o"
         info "success"
+        ls -alh
         echo "
           # Usage example:
           - name: Check functions by action
