@@ -15,8 +15,9 @@ on:
         description: 'choice sub workflow'
         type: choice
         required: true
-        default: 'lib'
+        default: 'all'
         options:
+          - all
           - lib
           - dingtalk
       delete_run:
@@ -32,14 +33,14 @@ jobs:
   # Reusing sub workflow
   call-lib-yml:
     uses: zhengmz/actions/.github/workflows/lib.yml@lib
-    if: github.event.inputs.workflow == 'lib'
+    if: github.event.inputs.workflow == 'lib' || github.event.inputs.workflow == 'all'
     with:
       import_mode: "action"
-      dist_name: ".functions"
+      dist: ".functions"
 
   call-dingtalk-yml:
     uses: zhengmz/actions/.github/workflows/dingtalk.yml@dingtalk
-    if: github.event.inputs.workflow == 'dingtalk'
+    if: github.event.inputs.workflow == 'dingtalk' || github.event.inputs.workflow == 'all'
     secrets: inherit
     with:
       msgtype: "text"
