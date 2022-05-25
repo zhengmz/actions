@@ -67,9 +67,7 @@ jobs:
         echo -e "Disk space: \n$(df -h)\n"
         echo -e "Environment: \n$(env)\n"
         #echo "Github object json:"
-        #cat << EOF
-        #    ${{ toJson(github) }}
-        #EOF
+        #echo ${{ toJson(github) }}
         #echo "inputs object json:"
         #echo ${{ toJson(inputs) }}
 
