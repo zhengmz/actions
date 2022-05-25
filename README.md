@@ -90,6 +90,8 @@ permissions:
     log "notice"
 ```
 
+>可能的原因，是因为每个 action 运行时，使用的 Shell 命令是 `/usr/bin/bash --noprofile --norc -e -o pipefail {0}`，不再使用之前的 profile 环境，但文件是存在的
+
 ### 2.5 重用 workflow
 
 see: <https://docs.github.com/en/actions/using-workflows/reusing-workflows>
