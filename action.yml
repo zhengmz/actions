@@ -21,6 +21,7 @@ runs:
         echo "Github object json: ${{ toJson(github) }}"
         echo "job object json: ${{ toJson(job) }}"
         echo "inputs object json: ${{ inputs != '' && toJson(inputs)  || ''}}"
+      shell: bash
 
     - id: main
       #run: source $GITHUB_ACTION_PATH/functions
