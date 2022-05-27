@@ -37,7 +37,10 @@ while [[ -S ${TMATE_SOCK} ]]; do
     if [ ! -f ${KEEP_FILE} ]; then
         if (( timeout < 0 )); then
             warn "Waiting on tmate connection timed out!"
-	    break
+            # The next step receive: The runner has received a shutdown signal.
+            # So kill session explicitly to release tmate connect
+            tmate -S ${TMATE_SOCK} kill-session
+            exit 0
         fi
 
         i=$((i+1))
@@ -47,12 +50,4 @@ while [[ -S ${TMATE_SOCK} ]]; do
         fi
     fi
 done
-
-ps -ef|grep tmate|grep -v grep
-# The next step receive: The runner has received a shutdown signal.
-# So kill session explicitly to release tmate connect
-[[ -S ${TMATE_SOCK} ]] && tmate -S ${TMATE_SOCK} kill-session
-echo "After kill session..."
-ps -ef|grep tmate|grep -v grep
-exit 0
 
