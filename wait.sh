@@ -48,10 +48,11 @@ while [[ -S ${TMATE_SOCK} ]]; do
     fi
 done
 
-ps -ef|grep tmate
+ps -ef|grep tmate|grep -v grep
 # The next step receive: The runner has received a shutdown signal.
 # So kill session explicitly to release tmate connect
 tmate -S ${TMATE_SOCK} kill-session
-ps -ef|grep tmate
+echo "After kill session..."
+ps -ef|grep tmate|grep -v grep
 exit 0
 
