@@ -51,7 +51,7 @@ done
 ps -ef|grep tmate|grep -v grep
 # The next step receive: The runner has received a shutdown signal.
 # So kill session explicitly to release tmate connect
-tmate -S ${TMATE_SOCK} kill-session
+[[ -S ${TMATE_SOCK} ]] && tmate -S ${TMATE_SOCK} kill-session
 echo "After kill session..."
 ps -ef|grep tmate|grep -v grep
 exit 0
