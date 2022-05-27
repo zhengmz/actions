@@ -20,13 +20,15 @@ TMATE_SOCK="/tmp/tmate.sock"
 
 # Install tmate on macOS or Ubuntu
 info "Setting up tmate ..."
-if [ -x "$(command -v brew)" ]; then
-    brew install tmate
-elif [ -x "$(command -v apt-get)" ]; then
-    sudo apt-get install -y tmate
-else
-    error "This system is not supported!"
-    exit 1
+if [ ! -x "$(command -v tmate)" ]; then
+	if [ -x "$(command -v brew)" ]; then
+	    brew install tmate
+	elif [ -x "$(command -v apt-get)" ]; then
+	    sudo apt-get install -y tmate
+	else
+	    error "This system is not supported!"
+	    exit 1
+	fi
 fi
 
 # Generate ssh key if needed

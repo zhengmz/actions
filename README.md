@@ -6,6 +6,7 @@ see:
 
 - <https://github.com/P3TERX/ssh2actions>
 - <https://github.com/csexton/debugger-action>
+- <https://github.com/mxschmitt/action-tmate>
 
 This GitHub Action offers you connect to GitHub Actions VM via SSH for interactive debugging
 
