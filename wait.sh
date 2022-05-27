@@ -38,6 +38,7 @@ while [[ -S ${TMATE_SOCK} ]]; do
         if (( timeout < 0 )); then
             warn "Waiting on tmate connection timed out!"
             # The next step receive: The runner has received a shutdown signal.
+	    # Maybe because tmate.io will shutdown tmate connection in 1 hour
             # So kill session explicitly to release tmate connect
             tmate -S ${TMATE_SOCK} kill-session
             exit 0
