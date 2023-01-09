@@ -8,8 +8,10 @@
 
 set -e
 
+# Get program directory
+PRGDIR=$(dirname $(readlink -f "$0"))
 # source functions
-lib_file="/tmp/functions"
+lib_file="$PRGDIR/lib_functions"
 if [ ! -f "$lib_file" ]; then
 	echo "get functions from web..."
 	curl -fsSL https://github.com/zhengmz/actions/raw/lib/functions > $lib_file
